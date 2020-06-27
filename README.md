@@ -1,5 +1,7 @@
 # netctl-obfuscate
 
+![Go](https://github.com/gryffyn/netctl-obfuscate/workflows/Go/badge.svg?branch=master)
+
 ## Description
 
 `netctl` uses `wpa_supplicant` for connecting to wireless networks. `wpa_supplicant` comes with a tool, `wpa_passphrase`, which obfuscates the WPA/WEP key.
