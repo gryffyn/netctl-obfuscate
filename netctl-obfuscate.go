@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -24,22 +25,17 @@ func checkUser() {
 		log.Fatal(err)
 	}
 	if currUser.Uid != "0" {
-		fmt.Println("Sorry, this must be run as root or with sudo.")
+		fmt.Println("[!] netctl-obfuscate requires running as root or using sudo")
 		os.Exit(126)
 	}
 }
 
-func getPath() (fullpath string) {
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Enter the name of the netctl config file (eg. wlp2s0-ESSID): ")
-	netctlFile, _ := reader.ReadString('\n')
+func getPath(netctlFile string) (fullpath string) {
 	fullpath = filepath.Join("/etc/netctl/", netctlFile)
 	fileValid := false
 	for fileValid == false {
-		if _, err := os.Stat(fullpath); !os.IsNotExist(err) {
-			fmt.Println("File name is incorrect. Please try again: ")
-			netctlFile, _ = reader.ReadString('\n')
-			fullpath = filepath.Join("/etc/netctl/", netctlFile)
+		if _, err := os.Stat(fullpath); os.IsNotExist(err) {
+			check(err)
 		} else {
 			fileValid = true
 		}
@@ -66,6 +62,31 @@ func getESSIDandKey(path string) (ESSID, Key string) {
 	return
 }
 
+func copyFile(src, dst string) (int64, error) {
+	sourceFileStat, err := os.Stat(src)
+	if err != nil {
+		return 0, err
+	}
+
+	if !sourceFileStat.Mode().IsRegular() {
+		return 0, fmt.Errorf("%s is not a regular file", src)
+	}
+
+	source, err := os.Open(src)
+	if err != nil {
+		return 0, err
+	}
+	defer source.Close()
+
+	destination, err := os.Create(dst)
+	if err != nil {
+		return 0, err
+	}
+	defer destination.Close()
+	nBytes, err := io.Copy(destination, source)
+	return nBytes, err
+}
+
 func getPSK(ESSID, Key string) (PSK string) {
 	cmdstr := exec.Command("wpa_passphrase", ESSID, Key)
 	output, err := cmdstr.Output()
@@ -79,7 +100,9 @@ func getPSK(ESSID, Key string) (PSK string) {
 func keyToPSK(file *os.File) {
 	s := bufio.NewScanner(file)
 	for s.Scan() {
-		if strings.Contains(s.Text(), "]") {
+		if strings.Contains(s.Text(), "Key=") {
+
+		} else {
 
 		}
 	}
@@ -90,5 +113,9 @@ func main() {
 	ESSID := "Test"                       // Test data
 	Key := "Thisisatest"
 	fmt.Println(getPSK(ESSID, Key)) */
-	fmt.Println(getPSK(getESSIDandKey(getPath())))
+	netctlName := os.Args[1]
+	path := getPath(netctlName)
+	fmt.Println("Saving backup copy of file as " + netctlName + ".orig ...")
+	_, err := copyFile(path, string(path+".bak"))
+	check(err)
 }
