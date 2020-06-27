@@ -7,7 +7,7 @@
 `netctl` uses `wpa_supplicant` for connecting to wireless networks. `wpa_supplicant` comes with a tool, `wpa_passphrase`, which obfuscates the WPA/WEP key.
 `netctl-obfuscate` wraps around wpa_passphrase to automatically update `netctl` profiles to use the obfuscated PSK instead of the plaintext key.
 
-Running `netctl-obfuscate` creates a backup of the netctl profile named \<profilename\>.orig, which can be restored if the program does something it's not supposed to. If that happens, opening an issue describing what happened would be much appreciated.
+Running `netctl-obfuscate` creates a backup of the netctl profile named `<profilename>.orig`, which can be restored if the program does something it's not supposed to. If that happens, opening an issue describing what happened would be much appreciated.
 
 ## Building/Installing
 ### Requirements
