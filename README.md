@@ -12,8 +12,10 @@ Requires `go`.
 ### Building
 Clone this repo (`git clone github.com/gryffyn/netctl-obfuscate/`), `cd` to it, and run `go build`. The binary will be written to the working directory.
 
+Alternatively, run the first two commands and then `go install` which will install a binary to your `GOBIN` path.
+
 ### Installing
-Clone this repo (`git clone github.com/gryffyn/netctl-obfuscate/`), `cd` to it, and run `go install`. This will create a binary in your `GOBIN`.
+Run `go get github.com/gryffyn/netctl-obfuscate`.
 
 Alternatively, if you're running Arch/Arch derivatives, `netctl-obfuscate` is available [on the AUR.](https://aur.archlinux.org/packages/netctl-obfuscate/)
 
