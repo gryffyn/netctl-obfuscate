@@ -31,7 +31,9 @@ func checkUser() {
 	}
 }
 
-func getPath(netctlFile string) (fullpath string) {
+func getPath(inputstr string) (fullpath string) {
+	tempfile := strings.Split(inputstr, "/")
+	netctlFile := tempfile[len(tempfile)-1]
 	fullpath = filepath.Join("/etc/netctl/", netctlFile)
 	if _, err := os.Stat(fullpath); os.IsNotExist(err) {
 		check(err)
