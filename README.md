@@ -1,6 +1,6 @@
 # netctl-obfuscate
 
-![Go](https://github.com/gryffyn/netctl-obfuscate/workflows/Go/badge.svg?branch=master)
+![Go](https://github.com/gryffyn/netctl-obfuscate/workflows/Go/badge.svg?branch=master) [![forthebadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com)
 
 ## Description
 
